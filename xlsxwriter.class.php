@@ -120,7 +120,7 @@ Class XLSXWriter
 			fwrite($fd, '<row collapsed="false" customFormat="false" customHeight="false" hidden="false" ht="12.1" outlineLevel="0" r="'.(1).'">');
 			foreach($header_row as $k=>$v)
 			{
-				$this->writeCell($fd, 0, $k, $v, $cell_format='string');
+				$this->writeHeader($fd, 0, $k, $v, $cell_format='string');
 			}
 			fwrite($fd, '</row>');
 		}
@@ -146,6 +146,27 @@ Class XLSXWriter
 	}
 
 	protected function writeCell($fd, $row_number, $column_number, $value, $cell_format)
+	{
+		static $styles = array('money'=>1,'dollar'=>1,'datetime'=>2,'date'=>3,'string'=>0);
+		$cell = self::xlsCell($row_number, $column_number);
+		$s = isset($styles[$cell_format]) ? $styles[$cell_format] : '0';
+		
+		if (is_numeric($value)) {
+			fwrite($fd,'<c r="'.$cell.'" s="'.$s.'" t="n"><v>'.($value*1).'</v></c>');//int,float, etc
+		} else if ($cell_format=='date') {
+			fwrite($fd,'<c r="'.$cell.'" s="'.$s.'" t="n"><v>'.intval(self::convert_date_time($value)).'</v></c>');
+		} else if ($cell_format=='datetime') {
+			fwrite($fd,'<c r="'.$cell.'" s="'.$s.'" t="n"><v>'.self::convert_date_time($value).'</v></c>');
+		} else if ($value==''){
+			fwrite($fd,'<c r="'.$cell.'" s="'.$s.'"/>');
+		} else if ($value{0}=='='){
+			fwrite($fd,'<c r="'.$cell.'" s="'.$s.'" t="s"><f>'.self::xmlspecialchars($value).'</f></c>');
+		} else if ($value!==''){
+			fwrite($fd,'<c r="'.$cell.'" s="'.$s.'" t="s"><v>'.self::xmlspecialchars($this->setSharedString($value)).'</v></c>');
+		}
+	}
+
+	protected function writeHeader($fd, $row_number, $column_number, $value, $cell_format)
 	{
 		static $styles = array('money'=>1,'dollar'=>1,'datetime'=>2,'date'=>3,'string'=>0);
 		$cell = self::xlsCell($row_number, $column_number);
