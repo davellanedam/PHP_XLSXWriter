@@ -145,7 +145,7 @@ Class XLSXWriter
 		fclose($fd);
 	}
 
-	protected function writeCell($fd, $row_number, $column_number, $value, $cell_format)
+	protected function writeHeader($fd, $row_number, $column_number, $value, $cell_format)
 	{
 		static $styles = array('money'=>1,'dollar'=>1,'datetime'=>2,'date'=>3,'string'=>0);
 		$cell = self::xlsCell($row_number, $column_number);
@@ -166,7 +166,7 @@ Class XLSXWriter
 		}
 	}
 
-	protected function writeHeader($fd, $row_number, $column_number, $value, $cell_format)
+	protected function writeCell($fd, $row_number, $column_number, $value, $cell_format)
 	{
 		static $styles = array('money'=>1,'dollar'=>1,'datetime'=>2,'date'=>3,'string'=>0);
 		$cell = self::xlsCell($row_number, $column_number);
