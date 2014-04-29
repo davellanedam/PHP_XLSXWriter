@@ -108,7 +108,7 @@ Class XLSXWriter
 		fwrite($fd,    '<dimension ref="A1:'.$max_cell.'"/>');
 		fwrite($fd,    '<sheetViews>');
 		fwrite($fd,        '<sheetView colorId="64" defaultGridColor="true" rightToLeft="false" showFormulas="false" showGridLines="true" showOutlineSymbols="true" showRowColHeaders="true" showZeros="true" tabSelected="'.$tabselected.'" topLeftCell="A1" view="normal" windowProtection="false" workbookViewId="0" zoomScale="100" zoomScaleNormal="100" zoomScalePageLayoutView="100">');
-		fwrite($fd,            '<selection activeCell="A1" activeCellId="0" pane="topLeft" sqref="A1"/>');
+		fwrite($fd,        	'<pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/>');
 		fwrite($fd,        '</sheetView>');
 		fwrite($fd,    '</sheetViews>');
 		fwrite($fd,    '<cols>');
